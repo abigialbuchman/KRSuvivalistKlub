@@ -1,2 +1,2 @@
-# KRSuvivalistKlub
-DSA2 final Project 
+# Simplex_2178
+Repository for DSA2 Summer 2017
