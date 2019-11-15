@@ -29,6 +29,9 @@ class MyEntity
 	static std::map<String, MyEntity*> m_IDMap; //a map of the unique ID's
 
 public:
+
+	String tag = "";
+
 	/*
 	Usage: Constructor that specifies the name attached to the MyEntity
 	Arguments:

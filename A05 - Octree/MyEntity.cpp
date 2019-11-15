@@ -244,6 +244,10 @@ bool Simplex::MyEntity::IsColliding(MyEntity* const other)
 	if (!SharesDimension(other))
 		return false;
 
+	//skip collisions between trees
+	if (tag == "tree" && other->tag == "tree")
+		return false;
+
 	return m_pRigidBody->IsColliding(other->GetRigidBody());
 }
 void Simplex::MyEntity::ClearCollisionList(void)

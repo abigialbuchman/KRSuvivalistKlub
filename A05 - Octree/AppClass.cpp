@@ -29,33 +29,35 @@ void Application::InitVariables(void)
 			switch (tree)
 			{
 			case 1:
-				m_pEntityMngr->AddEntity("CustomModels\\tree1.obj");
+				m_pEntityMngr->AddEntity("CustomModels\\tree1.obj", "NA", "tree");
 				break;
 			case 2:
-				m_pEntityMngr->AddEntity("CustomModels\\tree2.obj");
+				m_pEntityMngr->AddEntity("CustomModels\\tree2.obj", "NA", "tree");
 				break;
 			case 3:
-				m_pEntityMngr->AddEntity("CustomModels\\tree3.obj");
+				m_pEntityMngr->AddEntity("CustomModels\\tree3.obj", "NA", "tree");
 				break;
 			case 4:
-				m_pEntityMngr->AddEntity("CustomModels\\tree4.obj");
+				m_pEntityMngr->AddEntity("CustomModels\\tree4.obj", "NA", "tree");
 				break;
 			case 5:
-				m_pEntityMngr->AddEntity("CustomModels\\tree5.obj");
+				m_pEntityMngr->AddEntity("CustomModels\\tree5.obj", "NA", "tree");
 				break;
 			default:
 				std::cout << "yonkers" << std::endl;
 				break;
 			}
-			vector3 v3Position = vector3(glm::sphericalRand(34.0f));
+			vector3 v3Position = vector3((rand() % forestSize) - (forestSize / 2), 
+											0, 
+											(rand() % forestSize) - (forestSize / 2));
 			matrix4 m4Position = glm::translate(v3Position);
 			m_pEntityMngr->SetModelMatrix(m4Position);
 		}
 	}
 
 	m_uOctantLevels = 1;
-	m_pRoot = new MyOctant(m_uOctantLevels, 5);
 	m_pEntityMngr->Update();
+	m_pRoot = new MyOctant(m_uOctantLevels, 5);
 }
 void Application::Update(void)
 {
