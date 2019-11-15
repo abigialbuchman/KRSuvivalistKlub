@@ -31,6 +31,10 @@ void Application::InitVariables(void)
 			m_pEntityMngr->SetModelMatrix(m4Position);
 		}
 	}
+
+	m_pEntityMngr->AddEntity("Minecraft\\Cow.obj");
+	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(0.0f)));
+
 	m_uOctantLevels = 1;
 	m_pRoot = new MyOctant(m_uOctantLevels, 5);
 	m_pEntityMngr->Update();
