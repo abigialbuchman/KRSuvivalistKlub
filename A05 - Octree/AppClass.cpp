@@ -25,15 +25,33 @@ void Application::InitVariables(void)
 		for (int j = 0; j < nSquare; j++)
 		{
 			uIndex++;
-			m_pEntityMngr->AddEntity("Minecraft\\Cube.obj");
+			int tree = rand() % 5 + 1;
+			switch (tree)
+			{
+			case 1:
+				m_pEntityMngr->AddEntity("CustomModels\\tree1.obj");
+				break;
+			case 2:
+				m_pEntityMngr->AddEntity("CustomModels\\tree2.obj");
+				break;
+			case 3:
+				m_pEntityMngr->AddEntity("CustomModels\\tree3.obj");
+				break;
+			case 4:
+				m_pEntityMngr->AddEntity("CustomModels\\tree4.obj");
+				break;
+			case 5:
+				m_pEntityMngr->AddEntity("CustomModels\\tree5.obj");
+				break;
+			default:
+				std::cout << "yonkers" << std::endl;
+				break;
+			}
 			vector3 v3Position = vector3(glm::sphericalRand(34.0f));
 			matrix4 m4Position = glm::translate(v3Position);
 			m_pEntityMngr->SetModelMatrix(m4Position);
 		}
 	}
-
-	m_pEntityMngr->AddEntity("Minecraft\\Cow.obj");
-	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(0.0f)));
 
 	m_uOctantLevels = 1;
 	m_pRoot = new MyOctant(m_uOctantLevels, 5);
