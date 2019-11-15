@@ -21,11 +21,15 @@ void Application::InitVariables(void)
 	m_uObjects = nSquare * nSquare;
 	uint uIndex = -1;
 
+	//make the ground
 	m_pEntityMngr->AddEntity("CustomModels\\ground.obj", "NA", "ground");
 	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(0.0f)) * glm::scale(vector3(forestSize, 1, forestSize)));
 
+	//make the trees
 	for (int i = 0; i < numTrees; i++) {
 		uIndex++;
+
+		//randomize tree type
 		int tree = rand() % 5 + 1;
 		switch (tree)
 		{
@@ -48,6 +52,8 @@ void Application::InitVariables(void)
 			std::cout << "yonkers" << std::endl;
 			break;
 		}
+
+		//place tree in a random spot on the ground
 		vector3 v3Position = vector3((rand() % forestSize) - forestSize / 2,
 			0,
 			(rand() % forestSize) - forestSize / 2);
