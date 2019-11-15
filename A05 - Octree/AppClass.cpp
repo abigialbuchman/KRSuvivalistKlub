@@ -20,38 +20,46 @@ void Application::InitVariables(void)
 	int nSquare = static_cast<int>(std::sqrt(uInstances));
 	m_uObjects = nSquare * nSquare;
 	uint uIndex = -1;
+
+	m_pEntityMngr->AddEntity("CustomModels\\ground.obj", "NA", "ground");
+	m_pEntityMngr->SetModelMatrix(glm::translate(vector3(0.0f)) * glm::scale(vector3(forestSize, 1, forestSize)));
+
+	for (int i = 0; i < numTrees; i++) {
+		uIndex++;
+		int tree = rand() % 5 + 1;
+		switch (tree)
+		{
+		case 1:
+			m_pEntityMngr->AddEntity("CustomModels\\tree1.obj", "NA", "tree");
+			break;
+		case 2:
+			m_pEntityMngr->AddEntity("CustomModels\\tree2.obj", "NA", "tree");
+			break;
+		case 3:
+			m_pEntityMngr->AddEntity("CustomModels\\tree3.obj", "NA", "tree");
+			break;
+		case 4:
+			m_pEntityMngr->AddEntity("CustomModels\\tree4.obj", "NA", "tree");
+			break;
+		case 5:
+			m_pEntityMngr->AddEntity("CustomModels\\tree5.obj", "NA", "tree");
+			break;
+		default:
+			std::cout << "yonkers" << std::endl;
+			break;
+		}
+		vector3 v3Position = vector3((rand() % forestSize) - forestSize / 2,
+			0,
+			(rand() % forestSize) - forestSize / 2);
+		matrix4 m4Position = glm::translate(v3Position);
+		m_pEntityMngr->SetModelMatrix(m4Position);
+	}
+
 	for (int i = 0; i < nSquare; i++)
 	{
 		for (int j = 0; j < nSquare; j++)
 		{
-			uIndex++;
-			int tree = rand() % 5 + 1;
-			switch (tree)
-			{
-			case 1:
-				m_pEntityMngr->AddEntity("CustomModels\\tree1.obj", "NA", "tree");
-				break;
-			case 2:
-				m_pEntityMngr->AddEntity("CustomModels\\tree2.obj", "NA", "tree");
-				break;
-			case 3:
-				m_pEntityMngr->AddEntity("CustomModels\\tree3.obj", "NA", "tree");
-				break;
-			case 4:
-				m_pEntityMngr->AddEntity("CustomModels\\tree4.obj", "NA", "tree");
-				break;
-			case 5:
-				m_pEntityMngr->AddEntity("CustomModels\\tree5.obj", "NA", "tree");
-				break;
-			default:
-				std::cout << "yonkers" << std::endl;
-				break;
-			}
-			vector3 v3Position = vector3((rand() % forestSize) - (forestSize / 2), 
-											0, 
-											(rand() % forestSize) - (forestSize / 2));
-			matrix4 m4Position = glm::translate(v3Position);
-			m_pEntityMngr->SetModelMatrix(m4Position);
+			
 		}
 	}
 

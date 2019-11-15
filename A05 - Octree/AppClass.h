@@ -26,7 +26,8 @@ class Application
 	uint m_uObjects = 0; //Number of objects in the scene
 	uint m_uOctantLevels = 0; //Number of levels in the octree
 
-	uint forestSize = 100;
+	int forestSize = 100;
+	uint numTrees = 900;
 	
 private:
 	String m_sProgrammer = "Abigail Buchman - amb5759@rit.edu"; //programmer

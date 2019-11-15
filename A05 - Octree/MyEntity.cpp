@@ -247,7 +247,9 @@ bool Simplex::MyEntity::IsColliding(MyEntity* const other)
 	//skip collisions between trees
 	if (tag == "tree" && other->tag == "tree")
 		return false;
-
+	else if (tag == "tree" && other->tag == "ground" ||
+			tag == "ground" && other->tag == "tree")
+		return false;
 	return m_pRigidBody->IsColliding(other->GetRigidBody());
 }
 void Simplex::MyEntity::ClearCollisionList(void)
