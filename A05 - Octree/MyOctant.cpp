@@ -282,7 +282,7 @@ void Simplex::MyOctant::Subdivide(void)
 	}
 
 	//make it not a leaf
-	m_uChildren = 8;
+	m_uChildren = 4;
 
 	//go through and set all the new octants 
 	float l_fSize = m_fSize / 4.0f;
@@ -308,24 +308,24 @@ void Simplex::MyOctant::Subdivide(void)
 	v3Center.x -= fSizeDouble;
 	m_pChild[3] = new MyOctant(v3Center, fSizeDouble);
 
-	//MyOctant 4
-	v3Center.y += fSizeDouble;
-	m_pChild[4] = new MyOctant(v3Center, fSizeDouble);
+	////MyOctant 4
+	//v3Center.y += fSizeDouble;
+	//m_pChild[4] = new MyOctant(v3Center, fSizeDouble);
 
-	//MyOctant 5
-	v3Center.z -= fSizeDouble;
-	m_pChild[5] = new MyOctant(v3Center, fSizeDouble);
+	////MyOctant 5
+	//v3Center.z -= fSizeDouble;
+	//m_pChild[5] = new MyOctant(v3Center, fSizeDouble);
 
-	//MyOctant 6
-	v3Center.x += fSizeDouble;
-	m_pChild[6] = new MyOctant(v3Center, fSizeDouble);
+	////MyOctant 6
+	//v3Center.x += fSizeDouble;
+	//m_pChild[6] = new MyOctant(v3Center, fSizeDouble);
 
-	//MyOctant 7
-	v3Center.z += fSizeDouble;
-	m_pChild[7] = new MyOctant(v3Center, fSizeDouble);
+	////MyOctant 7
+	//v3Center.z += fSizeDouble;
+	//m_pChild[7] = new MyOctant(v3Center, fSizeDouble);
 
 	//loop through the list of children
-	for (uint i = 0; i < 8; i++) 
+	for (uint i = 0; i < m_uChildren; i++) 
 	{
 		m_pChild[i]->m_pRoot = m_pRoot;
 		m_pChild[i]->m_pParent = this;
