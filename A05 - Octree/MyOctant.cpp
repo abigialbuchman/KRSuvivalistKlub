@@ -117,6 +117,7 @@ Simplex::MyOctant::MyOctant(uint a_nMaxLevel, uint a_nIdealEntityCount)
 	}
 
 	MyRigidBody* l_pRigidBody = new MyRigidBody(MinMaxList);
+	m_v3Center = vector3(0, l_pRigidBody->GetHalfWidth().y, 0);
 
 	vector3 v3HalfWidth = l_pRigidBody->GetHalfWidth();
 	float fMax = v3HalfWidth.x;
@@ -282,7 +283,7 @@ void Simplex::MyOctant::Subdivide(void)
 	}
 
 	//make it not a leaf
-	m_uChildren = 4;
+	m_uChildren = 8;
 
 	//go through and set all the new octants 
 	float l_fSize = m_fSize / 4.0f;
@@ -308,21 +309,21 @@ void Simplex::MyOctant::Subdivide(void)
 	v3Center.x -= fSizeDouble;
 	m_pChild[3] = new MyOctant(v3Center, fSizeDouble);
 
-	////MyOctant 4
-	//v3Center.y += fSizeDouble;
-	//m_pChild[4] = new MyOctant(v3Center, fSizeDouble);
+	//MyOctant 4
+	v3Center.y += fSizeDouble;
+	m_pChild[4] = new MyOctant(v3Center, fSizeDouble);
 
-	////MyOctant 5
-	//v3Center.z -= fSizeDouble;
-	//m_pChild[5] = new MyOctant(v3Center, fSizeDouble);
+	//MyOctant 5
+	v3Center.z -= fSizeDouble;
+	m_pChild[5] = new MyOctant(v3Center, fSizeDouble);
 
-	////MyOctant 6
-	//v3Center.x += fSizeDouble;
-	//m_pChild[6] = new MyOctant(v3Center, fSizeDouble);
+	//MyOctant 6
+	v3Center.x += fSizeDouble;
+	m_pChild[6] = new MyOctant(v3Center, fSizeDouble);
 
-	////MyOctant 7
-	//v3Center.z += fSizeDouble;
-	//m_pChild[7] = new MyOctant(v3Center, fSizeDouble);
+	//MyOctant 7
+	v3Center.z += fSizeDouble;
+	m_pChild[7] = new MyOctant(v3Center, fSizeDouble);
 
 	//loop through the list of children
 	for (uint i = 0; i < m_uChildren; i++) 

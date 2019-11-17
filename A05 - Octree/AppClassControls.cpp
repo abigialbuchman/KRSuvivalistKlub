@@ -35,10 +35,16 @@ void Application::ProcessMousePressed(sf::Event a_event)
 }
 void Application::ProcessMouseReleased(sf::Event a_event)
 {
+	matrix4 m4Net = glm::translate(m_pCameraMngr->GetCamera(m_pCameraMngr->GetActiveCamera())->GetPosition());
+	m4Net *= glm::translate(m_pCameraMngr->GetCamera(m_pCameraMngr->GetActiveCamera())->GetForward() * 5);
 	switch (a_event.mouseButton.button)
 	{
 	default: break;
 	case sf::Mouse::Button::Left:
+		
+		m_pEntityMngr->AddEntity("Planets\\00_Sun.obj", "NA", "net");
+		m_pEntityMngr->SetModelMatrix(m4Net);
+
 		gui.m_bMousePressed[0] = false;
 		break;
 	case sf::Mouse::Button::Middle:

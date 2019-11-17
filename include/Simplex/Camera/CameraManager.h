@@ -8,6 +8,7 @@ Modified: 2017/06
 
 #include "Simplex\Camera\Camera.h"
 
+
 namespace Simplex
 {
 
