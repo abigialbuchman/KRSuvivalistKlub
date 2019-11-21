@@ -12,7 +12,16 @@ namespace Simplex
 
 //System Class
 class MyRigidBody
-{
+{	
+	enum Tag {
+		tree1,
+		tree2,
+		tree3,
+		tree4,
+		tree5
+	};
+	Tag tag;
+
 	typedef MyRigidBody* PRigidBody; //Entity Pointer
 	MeshManager* m_pMeshMngr = nullptr; //for displaying the Rigid Body
 
@@ -42,6 +51,8 @@ class MyRigidBody
 	uint m_nCollidingCount = 0; //size of the colliding set
 	PRigidBody* m_CollidingArray = nullptr; //array of rigid bodies this one is colliding with
 
+
+
 public:
 	/*
 	Usage: Constructor
@@ -49,6 +60,7 @@ public:
 	Output: class object instance
 	*/
 	MyRigidBody(std::vector<vector3> a_pointList);
+	MyRigidBody(std::vector<vector3> a_pointList, vector3 divider);
 	/*
 	Usage: Copy Constructor
 	Arguments: class object to copy

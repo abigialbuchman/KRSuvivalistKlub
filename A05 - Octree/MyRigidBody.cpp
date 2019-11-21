@@ -93,19 +93,27 @@ void MyRigidBody::SetModelMatrix(matrix4 a_m4ModelMatrix)
 
 	m_v3CenterG = vector3(m_m4ToWorld * vector4(m_v3CenterL, 1.0f));
 
+	//hey nick 
+	//the new source control 
+	//who even needs git?
+	//git sucks
+
 	//Calculate the 8 corners of the cube
 	vector3 v3Corner[8];
+
 	//Back square
 	v3Corner[0] = m_v3MinL;
 	v3Corner[1] = vector3(m_v3MaxL.x, m_v3MinL.y, m_v3MinL.z);
 	v3Corner[2] = vector3(m_v3MinL.x, m_v3MaxL.y, m_v3MinL.z);
 	v3Corner[3] = vector3(m_v3MaxL.x, m_v3MaxL.y, m_v3MinL.z);
+	//v3Corner[0] = vector3(-1, 0.0f, 0.0f);
 
 	//Front square
 	v3Corner[4] = vector3(m_v3MinL.x, m_v3MinL.y, m_v3MaxL.z);
 	v3Corner[5] = vector3(m_v3MaxL.x, m_v3MinL.y, m_v3MaxL.z);
 	v3Corner[6] = vector3(m_v3MinL.x, m_v3MaxL.y, m_v3MaxL.z);
 	v3Corner[7] = m_v3MaxL;
+	
 
 	//Place them in world space
 	for (uint uIndex = 0; uIndex < 8; ++uIndex)
@@ -158,6 +166,51 @@ MyRigidBody::MyRigidBody(std::vector<vector3> a_pointList)
 		if (m_v3MaxL.z < a_pointList[i].z) m_v3MaxL.z = a_pointList[i].z;
 		else if (m_v3MinL.z > a_pointList[i].z) m_v3MinL.z = a_pointList[i].z;
 	}
+
+	m_v3MinL /= 2;
+	m_v3MaxL /= 2;
+
+	//with model matrix being the identity, local and global are the same
+	m_v3MinG = m_v3MinL;
+	m_v3MaxG = m_v3MaxL;
+
+	//with the max and the min we calculate the center
+	m_v3CenterL = (m_v3MaxL + m_v3MinL) / 2.0f;
+
+	//we calculate the distance between min and max vectors
+	m_v3HalfWidth = (m_v3MaxL - m_v3MinL) / 2.0f;
+
+	//Get the distance between the center and either the min or the max
+	m_fRadius = glm::distance(m_v3CenterL, m_v3MinL);
+}
+MyRigidBody::MyRigidBody(std::vector<vector3> a_pointList, vector3 divider) {
+	Init();
+
+	//Count the points of the incoming list
+	uint uVertexCount = a_pointList.size();
+
+	//If there are none just return, we have no information to create the BS from
+	if (uVertexCount == 0)
+		return;
+
+	//Max and min as the first vector of the list
+	m_v3MaxL = m_v3MinL = a_pointList[0];
+
+	//Get the max and min out of the list
+	for (uint i = 1; i < uVertexCount; ++i)
+	{
+		if (m_v3MaxL.x < a_pointList[i].x) m_v3MaxL.x = a_pointList[i].x;
+		else if (m_v3MinL.x > a_pointList[i].x) m_v3MinL.x = a_pointList[i].x;
+
+		if (m_v3MaxL.y < a_pointList[i].y) m_v3MaxL.y = a_pointList[i].y;
+		else if (m_v3MinL.y > a_pointList[i].y) m_v3MinL.y = a_pointList[i].y;
+
+		if (m_v3MaxL.z < a_pointList[i].z) m_v3MaxL.z = a_pointList[i].z;
+		else if (m_v3MinL.z > a_pointList[i].z) m_v3MinL.z = a_pointList[i].z;
+	}
+
+	m_v3MinL /= divider;
+	m_v3MaxL /= divider;
 
 	//with model matrix being the identity, local and global are the same
 	m_v3MinG = m_v3MinL;

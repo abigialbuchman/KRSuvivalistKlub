@@ -30,7 +30,8 @@ void Application::InitVariables(void)
 		uIndex++;
 
 		//randomize tree type
-		int tree = rand() % 5 + 1;
+		//int tree = rand() % 5 + 1;
+		int tree = 1;
 		switch (tree)
 		{
 		case 1:

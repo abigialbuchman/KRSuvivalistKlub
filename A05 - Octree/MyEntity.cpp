@@ -69,7 +69,12 @@ Simplex::MyEntity::MyEntity(String a_sFileName, String a_sUniqueID)
 		GenUniqueID(a_sUniqueID);
 		m_sUniqueID = a_sUniqueID;
 		m_IDMap[a_sUniqueID] = this;
-		m_pRigidBody = new MyRigidBody(m_pModel->GetVertexList()); //generate a rigid body
+		if (tag == "tree") {
+			m_pRigidBody = new MyRigidBody(m_pModel->GetVertexList(), vector3(2,2,2)); //generate a rigid body
+		}
+		else {
+			m_pRigidBody = new MyRigidBody(m_pModel->GetVertexList()); //generate a rigid body
+		}
 		m_bInMemory = true; //mark this entity as viable
 	}
 }
@@ -248,7 +253,7 @@ bool Simplex::MyEntity::IsColliding(MyEntity* const other)
 	if (tag == "tree" && other->tag == "tree")
 		return false;
 	else if (tag == "tree" && other->tag == "ground" ||
-			tag == "ground" && other->tag == "tree")
+		tag == "ground" && other->tag == "tree")
 		return false;
 	return m_pRigidBody->IsColliding(other->GetRigidBody());
 }
