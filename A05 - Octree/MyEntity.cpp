@@ -58,9 +58,10 @@ void Simplex::MyEntity::Release(void)
 	m_IDMap.erase(m_sUniqueID);
 }
 //The big 3
-Simplex::MyEntity::MyEntity(String a_sFileName, String a_sUniqueID)
+Simplex::MyEntity::MyEntity(String a_sFileName, String a_sUniqueID, String a_tag)
 {
 	Init();
+	tag = a_tag;
 	m_pModel = new Model();
 	m_pModel->Load(a_sFileName);
 	//if the model is loaded
@@ -69,21 +70,60 @@ Simplex::MyEntity::MyEntity(String a_sFileName, String a_sUniqueID)
 		GenUniqueID(a_sUniqueID);
 		m_sUniqueID = a_sUniqueID;
 		m_IDMap[a_sUniqueID] = this;
-		if (tag == "tree") {
-			m_pRigidBody = new MyRigidBody(m_pModel->GetVertexList(), vector3(2,2,2)); //generate a rigid body
-		}
-		else {
-			m_pRigidBody = new MyRigidBody(m_pModel->GetVertexList()); //generate a rigid body
-		}
+		//if (tag == "tree") {
+		//	m_pRigidBody = new MyRigidBody(m_pModel->GetVertexList(), "tree"); //generate a rigid body
+		//}
+		//else {
+		//	m_pRigidBody = new MyRigidBody(m_pModel->GetVertexList()); //generate a rigid body
+		//}
+		m_pRigidBody = new MyRigidBody(m_pModel->GetVertexList(), tag);
 		m_bInMemory = true; //mark this entity as viable
 	}
 }
+
+Simplex::MyEntity::MyEntity(String a_sFileName, String a_sUniqueID, String a_tag, vector3 force)
+{
+	Init();
+	tag = a_tag;
+	m_pModel = new Model();
+	m_pModel->Load(a_sFileName);
+	//if the model is loaded
+	if (m_pModel->GetName() != "")
+	{
+		GenUniqueID(a_sUniqueID);
+		m_sUniqueID = a_sUniqueID;
+		m_IDMap[a_sUniqueID] = this;
+		//if (tag == "tree") {
+		//	m_pRigidBody = new MyRigidBody(m_pModel->GetVertexList(), "tree"); //generate a rigid body
+		//}
+		//else {
+		//	m_pRigidBody = new MyRigidBody(m_pModel->GetVertexList()); //generate a rigid body
+		//}
+		m_pRigidBody = new MyRigidBody(m_pModel->GetVertexList(), tag);
+		m_bInMemory = true; //mark this entity as viable
+	}
+
+	velocity = force;
+}
+
+void MyEntity::ApplyForce() {
+	matrix4 pos = GetModelMatrix();
+	pos *= glm::translate(velocity);
+	SetModelMatrix(pos);
+}
+
+void MyEntity::ApplyGravity() {
+	matrix4 pos = GetModelMatrix();
+	pos *= glm::translate(vector3(0.0f, -0.5f, 0.0f));
+	SetModelMatrix(pos);
+}
+
 Simplex::MyEntity::MyEntity(MyEntity const& other)
 {
 	m_bInMemory = other.m_bInMemory;
 	m_pModel = other.m_pModel;
 	//generate a new rigid body we do not share the same rigid body as we do the model
-	m_pRigidBody = new MyRigidBody(m_pModel->GetVertexList()); 
+	m_pRigidBody = new MyRigidBody(m_pModel->GetVertexList(), tag); 
 	m_m4ToWorld = other.m_m4ToWorld;
 	m_pMeshMngr = other.m_pMeshMngr;
 	m_sUniqueID = other.m_sUniqueID;

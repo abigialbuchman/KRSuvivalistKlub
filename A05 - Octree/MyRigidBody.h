@@ -60,6 +60,7 @@ public:
 	Output: class object instance
 	*/
 	MyRigidBody(std::vector<vector3> a_pointList);
+	MyRigidBody(std::vector<vector3> a_pointList, String tag);
 	MyRigidBody(std::vector<vector3> a_pointList, vector3 divider);
 	/*
 	Usage: Copy Constructor

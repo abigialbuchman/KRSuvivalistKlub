@@ -44,6 +44,7 @@ public:
 	OUTPUT: ---
 	*/
 	void AddEntity(String a_sFileName, String a_sUniqueID = "NA", String tag = "");
+	void AddEntity(String a_sFileName, String a_sUniqueID, String tag, vector3 force);
 	/*
 	USAGE: Deletes the MyEntity Specified by unique ID and removes it from the list
 	ARGUMENTS: uint a_uIndex -> index of the queried entry, if < 0 asks for the last one added

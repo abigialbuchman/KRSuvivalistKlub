@@ -27,7 +27,7 @@ class Application
 	uint m_uOctantLevels = 0; //Number of levels in the octree
 
 	int forestSize = 50; //the physical size of the forest
-	uint numTrees = 1; //the total number of trees in the forest
+	uint numTrees = 200; //the total number of trees in the forest
 	
 private:
 	String m_sProgrammer = "Abigail Buchman - amb5759@rit.edu"; //programmer

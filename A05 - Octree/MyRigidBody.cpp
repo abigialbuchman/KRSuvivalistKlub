@@ -167,8 +167,49 @@ MyRigidBody::MyRigidBody(std::vector<vector3> a_pointList)
 		else if (m_v3MinL.z > a_pointList[i].z) m_v3MinL.z = a_pointList[i].z;
 	}
 
-	m_v3MinL /= 2;
-	m_v3MaxL /= 2;
+	//with model matrix being the identity, local and global are the same
+	m_v3MinG = m_v3MinL;
+	m_v3MaxG = m_v3MaxL;
+
+	//with the max and the min we calculate the center
+	m_v3CenterL = (m_v3MaxL + m_v3MinL) / 2.0f;
+
+	//we calculate the distance between min and max vectors
+	m_v3HalfWidth = (m_v3MaxL - m_v3MinL) / 2.0f;
+
+	//Get the distance between the center and either the min or the max
+	m_fRadius = glm::distance(m_v3CenterL, m_v3MinL);
+}
+
+MyRigidBody::MyRigidBody(std::vector<vector3> a_pointList, String tag) {
+	Init();
+	//Count the points of the incoming list
+	uint uVertexCount = a_pointList.size();
+
+	//If there are none just return, we have no information to create the BS from
+	if (uVertexCount == 0)
+		return;
+
+	//Max and min as the first vector of the list
+	m_v3MaxL = m_v3MinL = a_pointList[0];
+
+	//Get the max and min out of the list
+	for (uint i = 1; i < uVertexCount; ++i)
+	{
+		if (m_v3MaxL.x < a_pointList[i].x) m_v3MaxL.x = a_pointList[i].x;
+		else if (m_v3MinL.x > a_pointList[i].x) m_v3MinL.x = a_pointList[i].x;
+
+		if (m_v3MaxL.y < a_pointList[i].y) m_v3MaxL.y = a_pointList[i].y;
+		else if (m_v3MinL.y > a_pointList[i].y) m_v3MinL.y = a_pointList[i].y;
+
+		if (m_v3MaxL.z < a_pointList[i].z) m_v3MaxL.z = a_pointList[i].z;
+		else if (m_v3MinL.z > a_pointList[i].z) m_v3MinL.z = a_pointList[i].z;
+	}
+
+	if (tag == "tree") {
+		m_v3MinL /= 4;
+		m_v3MaxL = vector3(m_v3MaxL.x / 4, m_v3MaxL.y, m_v3MaxL.z / 4);
+	}
 
 	//with model matrix being the identity, local and global are the same
 	m_v3MinG = m_v3MinL;
@@ -183,6 +224,7 @@ MyRigidBody::MyRigidBody(std::vector<vector3> a_pointList)
 	//Get the distance between the center and either the min or the max
 	m_fRadius = glm::distance(m_v3CenterL, m_v3MinL);
 }
+
 MyRigidBody::MyRigidBody(std::vector<vector3> a_pointList, vector3 divider) {
 	Init();
 

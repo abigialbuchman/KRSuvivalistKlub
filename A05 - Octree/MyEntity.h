@@ -28,6 +28,8 @@ class MyEntity
 
 	static std::map<String, MyEntity*> m_IDMap; //a map of the unique ID's
 
+	vector3 velocity = vector3(0.0f);
+
 public:
 
 	String tag = "";
@@ -39,12 +41,15 @@ public:
 	-	String a_sUniqueID -> Name wanted as identifier, if not available will generate one
 	Output: class object instance
 	*/
-	MyEntity(String a_sFileName, String a_sUniqueID = "NA");
+	MyEntity(String a_sFileName, String a_sUniqueID = "NA", String tag = "");
 	/*
 	Usage: Copy Constructor
 	Arguments: class object to copy
 	Output: class object instance
 	*/
+	MyEntity(String a_sFileName, String a_sUniqueID = "NA", String tag = "", vector3 force = vector3(0));
+	void ApplyForce();
+	void ApplyGravity();
 	MyEntity(MyEntity const& other);
 	/*
 	Usage: Copy Assignment Operator
