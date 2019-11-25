@@ -36,6 +36,9 @@ public:
 
 	String tag = "";
 
+	vector3 GetVelocity();
+	void SetVelocity(vector3 a_velocity);
+
 	/*
 	Usage: Constructor that specifies the name attached to the MyEntity
 	Arguments:

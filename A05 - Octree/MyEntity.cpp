@@ -303,3 +303,6 @@ void Simplex::MyEntity::SortDimensions(void)
 {
 	std::sort(m_DimensionArray, m_DimensionArray + m_nDimensionCount);
 }
+
+vector3 MyEntity::GetVelocity() { return velocity; }
+void MyEntity::SetVelocity(vector3 a_velocity) { velocity = a_velocity; }

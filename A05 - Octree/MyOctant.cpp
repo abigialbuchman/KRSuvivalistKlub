@@ -493,7 +493,7 @@ void MyOctant::UpdateEntityIDs() {
 		m_pChild[nChild]->UpdateEntityIDs();
 
 	//pretty sure this is what is making it lag, will fix later
-	entityArray = m_pEntityMngr->GetEntities();
+	//entityArray = m_pEntityMngr->GetEntities();
 
 	for (int i = 0; i < m_pEntityMngr->GetEntityCount(); i++) {
 		uint index = m_pEntityMngr->GetEntityIndex(entityArray[i]->GetUniqueID());

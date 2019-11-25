@@ -179,13 +179,26 @@ void Simplex::MyEntityManager::Update(void)
 	{
 		for (uint j = i + 1; j < m_uEntityCount; j++)
 		{
-			m_mEntityArray[i]->IsColliding(m_mEntityArray[j]);
+			if (m_mEntityArray[i]->IsColliding(m_mEntityArray[j])) {
+				//collision resolution goes here
+				if (m_mEntityArray[i]->tag == "rock") {
+					vector3 velocity = m_mEntityArray[i]->GetVelocity();
+					//velocity = vector3(velocity.x * -1, 0, 0);
+					m_mEntityArray[i]->SetVelocity(vector3(0));
+				}
+				if (m_mEntityArray[j]->tag == "rock") {
+					vector3 velocity = m_mEntityArray[j]->GetVelocity();
+					//velocity = vector3(velocity.x * -1, 0, 0);
+					m_mEntityArray[j]->SetVelocity(vector3(0));
+				}
+			}
 		}
 	}
 
 	for (uint i = 0; i < m_uEntityCount; i++)
 	{
-		if (m_mEntityArray[i]->tag == "rock") {
+		if (m_mEntityArray[i]->tag == "rock" && m_mEntityArray[i]->GetVelocity() != vector3(0)) {
+
 			m_mEntityArray[i]->ApplyGravity();
 			m_mEntityArray[i]->ApplyForce();
 		}
@@ -199,7 +212,7 @@ void Simplex::MyEntityManager::AddEntity(String a_sFileName, String a_sUniqueID,
 	if (pTemp->IsInitialized())
 	{
 		//create a new temp array with one extra entry
-		MyEntity** tempArray = new MyEntity*[m_uEntityCount + 1];
+		MyEntity** tempArray = new MyEntity * [m_uEntityCount + 1];
 		//start from 0 to the current count
 		uint uCount = 0;
 		for (uint i = 0; i < m_uEntityCount; ++i)
@@ -228,7 +241,7 @@ void Simplex::MyEntityManager::AddEntity(String a_sFileName, String a_sUniqueID,
 	if (pTemp->IsInitialized())
 	{
 		//create a new temp array with one extra entry
-		MyEntity** tempArray = new MyEntity*[m_uEntityCount + 1];
+		MyEntity** tempArray = new MyEntity * [m_uEntityCount + 1];
 		//start from 0 to the current count
 		uint uCount = 0;
 		for (uint i = 0; i < m_uEntityCount; ++i)
@@ -266,7 +279,7 @@ void Simplex::MyEntityManager::RemoveEntity(uint a_uIndex)
 
 	//and then pop the last one
 	//create a new temp array with one less entry
-	MyEntity** tempArray = new MyEntity*[m_uEntityCount - 1];
+	MyEntity** tempArray = new MyEntity * [m_uEntityCount - 1];
 	//start from 0 to the current count
 	for (uint i = 0; i < m_uEntityCount - 1; ++i)
 	{

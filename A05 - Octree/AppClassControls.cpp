@@ -43,6 +43,7 @@ void Application::ProcessMouseReleased(sf::Event a_event)
 	default: break;
 	case sf::Mouse::Button::Left:
 		m_pEntityMngr->AddEntity("Planets\\00_Sun.obj", "rock" + ID_num + 1, "rock", m_pCameraMngr->GetCamera(m_pCameraMngr->GetActiveCamera())->GetForward());
+		m4Net *= glm::scale(vector3(0.25f));
 		m_pEntityMngr->SetModelMatrix(m4Net);
 
 		gui.m_bMousePressed[0] = false;
