@@ -402,6 +402,8 @@ void Application::CameraRotation(float a_fSpeed)
 	}
 	//Change the Yaw and the Pitch of the camera
 	m_pCameraMngr->ChangeYaw(fAngleY * 0.25f);
+
+	//remove pitch for first person camera action
 	//m_pCameraMngr->ChangePitch(-fAngleX * 0.25f);
 	SetCursorPos(CenterX, CenterY);//Position the mouse in the center
 }
