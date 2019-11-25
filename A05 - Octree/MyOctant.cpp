@@ -485,6 +485,60 @@ void Simplex::MyOctant::AssignIDtoEntity(void)
 	}
 }
 
+void MyOctant::AssignIDtoEntity(MyEntity* entity) {
+	for (uint nChild = 0; nChild < m_uChildren; nChild++)
+		m_pChild[nChild]->AssignIDtoEntity(entity);
+
+	uint index = m_pEntityMngr->GetEntityIndex(entity->GetUniqueID());
+	if (IsLeaf()) {
+		if (IsColliding(entity)) {
+			m_EntitiyList.push_back(index);
+			m_pEntityMngr->AddDimension(index, m_uID);
+		}
+	}
+}
+
+bool MyOctant::IsColliding(MyEntity* entity) {
+
+	//AABB stuff
+	MyRigidBody* pRigidBody = entity->GetRigidBody();
+	vector3 v3MinO = pRigidBody->GetMinGlobal();
+	vector3 v3MaxO = pRigidBody->GetMaxGlobal();
+
+	//check for x
+	if (m_v3Max.x < v3MinO.x)
+	{
+		return false;
+	}
+	if (m_v3Min.x > v3MaxO.x)
+	{
+		return false;
+	}
+
+	//check y
+	if (m_v3Max.y < v3MinO.y)
+	{
+		return false;
+	}
+	if (m_v3Min.y > v3MaxO.y)
+	{
+		return false;
+	}
+
+	//check z
+	if (m_v3Max.z < v3MinO.z)
+	{
+		return false;
+	}
+	if (m_v3Min.z > v3MaxO.z)
+	{
+		return false;
+	}
+
+	//once none cleared 
+	return true;
+}
+
 void Simplex::MyOctant::ConstructList(void)
 {
 	for (uint nChild = 0; nChild < m_uChildren; nChild++) 

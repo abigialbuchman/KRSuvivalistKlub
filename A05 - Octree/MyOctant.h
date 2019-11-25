@@ -183,8 +183,10 @@ namespace Simplex
 		ARGUEMENTS: ---
 		OUTPUT: ---
 		*/
+		void AssignIDtoEntity(MyEntity* entity);
 		uint GetMyOctantCount(void);
 		bool IsColliding(uint a_uRBIndex);
+		bool IsColliding(MyEntity* entity);
 
 	private:
 		/*

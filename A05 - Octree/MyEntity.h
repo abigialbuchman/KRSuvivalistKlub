@@ -15,7 +15,7 @@ class MyEntity
 {
 	bool m_bInMemory = false; //loaded flag
 	bool m_bSetAxis = false; //render axis flag
-	String m_sUniqueID = ""; //Unique identifier name
+	String ID = ""; //Unique identifier name
 
 	uint m_nDimensionCount = 0; //tells how many dimensions this entity lives in
 	uint* m_DimensionArray = nullptr; //Dimensions on which this entity is located
@@ -29,6 +29,8 @@ class MyEntity
 	static std::map<String, MyEntity*> m_IDMap; //a map of the unique ID's
 
 	vector3 velocity = vector3(0.0f);
+	vector3 acceleration = vector3(0.0f);
+	const float gravity = 0.01f;
 
 public:
 
@@ -41,13 +43,13 @@ public:
 	-	String a_sUniqueID -> Name wanted as identifier, if not available will generate one
 	Output: class object instance
 	*/
-	MyEntity(String a_sFileName, String a_sUniqueID = "NA", String tag = "");
+	MyEntity(String a_sFileName, String a_sUniqueID, String tag);
 	/*
 	Usage: Copy Constructor
 	Arguments: class object to copy
 	Output: class object instance
 	*/
-	MyEntity(String a_sFileName, String a_sUniqueID = "NA", String tag = "", vector3 force = vector3(0));
+	MyEntity(String a_sFileName, String a_sUniqueID, String tag, vector3 force = vector3(0));
 	void ApplyForce();
 	void ApplyGravity();
 	MyEntity(MyEntity const& other);
