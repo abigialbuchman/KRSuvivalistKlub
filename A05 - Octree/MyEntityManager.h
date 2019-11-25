@@ -13,9 +13,9 @@ namespace Simplex
 //System Class
 class MyEntityManager
 {
-	typedef MyEntity* PEntity; //MyEntity Pointer
+	//typedef MyEntity* PEntity; //MyEntity Pointer
 	uint m_uEntityCount = 0; //number of elements in the list
-	PEntity* m_mEntityArray = nullptr; //array of MyEntity pointers
+	MyEntity** m_mEntityArray = nullptr; //array of MyEntity pointers
 	static MyEntityManager* m_pInstance; // Singleton pointer
 
 public:
@@ -70,6 +70,7 @@ public:
 	OUTPUT: UniqueID of the entity, if the list is empty will return blank
 	*/
 	MyEntity* GetEntity(uint a_uIndex = -1);
+	MyEntity** GetEntities();
 	/*
 	USAGE: Will update the MyEntity manager
 	ARGUMENTS: ---

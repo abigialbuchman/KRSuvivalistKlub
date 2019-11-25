@@ -7,6 +7,7 @@ Date: 2017/06
 #define _MYOCTANTCLASS_H_
 
 #include "MyEntityManager.h"
+#include "MyEntity.h"
 
 namespace Simplex
 {
@@ -38,6 +39,8 @@ namespace Simplex
 		MyOctant* m_pRoot = nullptr; // Root MyOctant
 		std::vector<MyOctant*> m_lChild; // list of nodes that contain objects (this will be applied to the root only)
 
+		MyEntity** entityArray;
+
 	public:
 		/*
 		USAGE: Constructor, will create an MyOctant containing all MagnaEntities Instances in the Mesh
@@ -47,7 +50,7 @@ namespace Simplex
 		-uint nIdealEntityCount = 5 -> Sets the ideal level of objects per MyOctant
 		OUTPUT: class object
 		*/
-		MyOctant(uint a_nMaxLevel = 2, uint a_nIdealEntityCount = 5);
+		MyOctant(uint a_nMaxLevel = 1, uint a_nIdealEntityCount = 5);
 		/*
 		USAGE: Constructor
 		ARGUEMENTS:
@@ -183,7 +186,7 @@ namespace Simplex
 		ARGUEMENTS: ---
 		OUTPUT: ---
 		*/
-		void AssignIDtoEntity(MyEntity* entity);
+		void UpdateEntityIDs();
 		uint GetMyOctantCount(void);
 		bool IsColliding(uint a_uRBIndex);
 		bool IsColliding(MyEntity* entity);

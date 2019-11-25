@@ -143,6 +143,8 @@ Simplex::MyOctant::MyOctant(uint a_nMaxLevel, uint a_nIdealEntityCount)
 
 	//construct tree
 	ConstructTree(m_uMaxLevel);
+
+	entityArray = m_pEntityMngr->GetEntities();
 }
 Simplex::MyOctant::MyOctant(vector3 a_v3Center, float a_fSize)
 {
@@ -485,15 +487,23 @@ void Simplex::MyOctant::AssignIDtoEntity(void)
 	}
 }
 
-void MyOctant::AssignIDtoEntity(MyEntity* entity) {
-	for (uint nChild = 0; nChild < m_uChildren; nChild++)
-		m_pChild[nChild]->AssignIDtoEntity(entity);
+void MyOctant::UpdateEntityIDs() {
 
-	uint index = m_pEntityMngr->GetEntityIndex(entity->GetUniqueID());
-	if (IsLeaf()) {
-		if (IsColliding(entity)) {
-			m_EntitiyList.push_back(index);
-			m_pEntityMngr->AddDimension(index, m_uID);
+	for (uint nChild = 0; nChild < m_uChildren; nChild++)
+		m_pChild[nChild]->UpdateEntityIDs();
+
+	//pretty sure this is what is making it lag, will fix later
+	entityArray = m_pEntityMngr->GetEntities();
+
+	for (int i = 0; i < m_pEntityMngr->GetEntityCount(); i++) {
+		uint index = m_pEntityMngr->GetEntityIndex(entityArray[i]->GetUniqueID());
+		if (entityArray[i]->tag == "rock") {
+			if (IsLeaf()) {
+				if (IsColliding(entityArray[i])) {
+					m_EntitiyList.push_back(index);
+					m_pEntityMngr->AddDimension(index, m_uID);
+				}
+			}
 		}
 	}
 }

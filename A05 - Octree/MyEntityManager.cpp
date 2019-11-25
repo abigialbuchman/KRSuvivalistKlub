@@ -199,7 +199,7 @@ void Simplex::MyEntityManager::AddEntity(String a_sFileName, String a_sUniqueID,
 	if (pTemp->IsInitialized())
 	{
 		//create a new temp array with one extra entry
-		PEntity* tempArray = new PEntity[m_uEntityCount + 1];
+		MyEntity** tempArray = new MyEntity*[m_uEntityCount + 1];
 		//start from 0 to the current count
 		uint uCount = 0;
 		for (uint i = 0; i < m_uEntityCount; ++i)
@@ -228,7 +228,7 @@ void Simplex::MyEntityManager::AddEntity(String a_sFileName, String a_sUniqueID,
 	if (pTemp->IsInitialized())
 	{
 		//create a new temp array with one extra entry
-		PEntity* tempArray = new PEntity[m_uEntityCount + 1];
+		MyEntity** tempArray = new MyEntity*[m_uEntityCount + 1];
 		//start from 0 to the current count
 		uint uCount = 0;
 		for (uint i = 0; i < m_uEntityCount; ++i)
@@ -266,7 +266,7 @@ void Simplex::MyEntityManager::RemoveEntity(uint a_uIndex)
 
 	//and then pop the last one
 	//create a new temp array with one less entry
-	PEntity* tempArray = new PEntity[m_uEntityCount - 1];
+	MyEntity** tempArray = new MyEntity*[m_uEntityCount - 1];
 	//start from 0 to the current count
 	for (uint i = 0; i < m_uEntityCount - 1; ++i)
 	{
@@ -311,6 +311,11 @@ Simplex::MyEntity* Simplex::MyEntityManager::GetEntity(uint a_uIndex)
 
 	return m_mEntityArray[a_uIndex];
 }
+
+Simplex::MyEntity** Simplex::MyEntityManager::GetEntities() {
+	return m_mEntityArray;
+}
+
 void Simplex::MyEntityManager::AddEntityToRenderList(uint a_uIndex, bool a_bRigidBody)
 {
 	//if out of bounds will do it for all
