@@ -29,8 +29,9 @@ class MyEntity
 	static std::map<String, MyEntity*> m_IDMap; //a map of the unique ID's
 
 	vector3 velocity = vector3(0.0f);
-	vector3 acceleration = vector3(0.0f);
+	//vector3 acceleration = vector3(0.0f);
 	const float gravity = 0.01f;
+	bool grounded = false;
 
 public:
 
@@ -38,6 +39,9 @@ public:
 
 	vector3 GetVelocity();
 	void SetVelocity(vector3 a_velocity);
+	void AddForce(vector3 a_force);
+	void SetGrounded(bool g);
+	void Update();
 
 	/*
 	Usage: Constructor that specifies the name attached to the MyEntity
@@ -53,8 +57,6 @@ public:
 	Output: class object instance
 	*/
 	MyEntity(String a_sFileName, String a_sUniqueID, String tag, vector3 force = vector3(0));
-	void ApplyForce();
-	void ApplyGravity();
 	MyEntity(MyEntity const& other);
 	/*
 	Usage: Copy Assignment Operator

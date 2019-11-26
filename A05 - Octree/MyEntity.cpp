@@ -106,16 +106,6 @@ Simplex::MyEntity::MyEntity(String a_sFileName, String a_sUniqueID, String a_tag
 	velocity = force;
 }
 
-void MyEntity::ApplyForce() {
-	matrix4 pos = GetModelMatrix();
-	pos *= glm::translate(velocity);
-	SetModelMatrix(pos);
-}
-
-void MyEntity::ApplyGravity() {
-	velocity.y -= gravity;
-}
-
 Simplex::MyEntity::MyEntity(MyEntity const& other)
 {
 	m_bInMemory = other.m_bInMemory;
@@ -304,5 +294,27 @@ void Simplex::MyEntity::SortDimensions(void)
 	std::sort(m_DimensionArray, m_DimensionArray + m_nDimensionCount);
 }
 
+
+void MyEntity::Update() {
+	// if not on ground
+	if (!grounded) {
+		// fall
+		velocity.y -= gravity;
+	}
+	else {
+		velocity.y = 0; //stop falling
+		velocity += velocity * -0.1f; //apply friction
+	}
+
+	matrix4 pos = GetModelMatrix();
+	pos *= glm::translate(velocity);
+	SetModelMatrix(pos);
+}
+
+
 vector3 MyEntity::GetVelocity() { return velocity; }
 void MyEntity::SetVelocity(vector3 a_velocity) { velocity = a_velocity; }
+void MyEntity::AddForce(vector3 a_force) {
+	velocity += a_force;
+}
+void MyEntity::SetGrounded(bool g) { grounded = g; }
