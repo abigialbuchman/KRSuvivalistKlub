@@ -181,12 +181,16 @@ void Simplex::MyEntityManager::Update(void)
 		{
 			if (m_mEntityArray[i]->IsColliding(m_mEntityArray[j])) {
 				//collision resolution goes here
+				//good god do we need to rethink how collision resolution works for the final deliverable
 				if (m_mEntityArray[i]->tag == "rock") {
 					if (m_mEntityArray[j]->tag == "ground") {
 						m_mEntityArray[i]->SetGrounded(true);
 					}
 					else {
-						m_mEntityArray[i]->SetVelocity(m_mEntityArray[i]->GetVelocity() * -0.5f);
+						vector3 v = m_mEntityArray[i]->GetVelocity();
+						v.x *= -0.5f;
+						v.z *= -0.5f;
+						m_mEntityArray[i]->SetVelocity(v);
 					}
 				}
 				if (m_mEntityArray[j]->tag == "rock") {
@@ -194,7 +198,17 @@ void Simplex::MyEntityManager::Update(void)
 						m_mEntityArray[j]->SetGrounded(true);
 					}
 					else {
-						m_mEntityArray[j]->SetVelocity(m_mEntityArray[j]->GetVelocity() * -0.5f);
+						if (m_mEntityArray[i]->tag == "rock") {
+							vector3 v2 = m_mEntityArray[j]->GetVelocity();
+							v2.x *= 0.5f;
+							v2.z *= 0.5f;
+							m_mEntityArray[i]->SetVelocity(v2);
+						}
+						vector3 v = m_mEntityArray[j]->GetVelocity();
+						v.x *= -0.5f;
+						v.z *= -0.5f;
+						m_mEntityArray[j]->SetVelocity(v);
+						
 					}
 				}
 			}
