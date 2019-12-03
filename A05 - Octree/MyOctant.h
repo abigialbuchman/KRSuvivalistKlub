@@ -32,12 +32,14 @@ namespace Simplex
 		vector3 m_v3Min = vector3(0.0f); //will store the minimum vector of the MyOctant
 		vector3 m_v3Max = vector3(0.0f); // Will store the maximum vector of the MyOctant 
 
-		MyOctant* m_pParent = nullptr; //Will store the parent of the current MyOctant
-		MyOctant* m_pChild[8]; //will store the childre of the current MyOctant 
+		//MyOctant* m_pParent = nullptr; //Will store the parent of the current MyOctant
+		//MyOctant* m_pChild[8]; //will store the childre of the current MyOctant 
 
 		std::vector<uint> m_EntitiyList = std::vector<uint>(); // list of all entities under this MyOctant
 		MyOctant* m_pRoot = nullptr; // Root MyOctant
 		std::vector<MyOctant*> m_lChild; // list of nodes that contain objects (this will be applied to the root only)
+
+		std::vector<std::vector<MyOctant>> m_GridList;
 
 		MyEntity** entityArray;
 

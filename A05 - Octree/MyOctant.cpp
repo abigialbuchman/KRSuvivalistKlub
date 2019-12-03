@@ -23,12 +23,12 @@ void MyOctant::Init(void)
 	m_pMeshMngr = MeshManager::GetInstance();
 	m_pEntityMngr = MyEntityManager::GetInstance();
 
-	m_pRoot = nullptr;
-	m_pParent = nullptr;
-	for (uint n = 0; n < 8; n++)
-	{
-		m_pChild[n] = nullptr;
-	}
+	//m_pRoot = nullptr;
+	//m_pParent = nullptr;
+	//for (uint n = 0; n < 8; n++)
+	//{
+	//	m_pChild[n] = nullptr;
+	//}
 }
 void MyOctant::Swap(MyOctant& other)
 {
@@ -48,11 +48,11 @@ void MyOctant::Swap(MyOctant& other)
 	std::swap(m_pEntityMngr, other.m_pEntityMngr);
 
 	std::swap(m_pRoot, other.m_pRoot);
-	std::swap(m_pParent, other.m_pParent);
-	for (uint n = 0; n < 8; n++)
-	{
-		std::swap(m_pChild[n], other.m_pChild[n]);
-	}
+	//std::swap(m_pParent, other.m_pParent);
+	//for (uint n = 0; n < 8; n++)
+	//{
+	//	std::swap(m_pChild[n], other.m_pChild[n]);
+	//}
 }
 void Simplex::MyOctant::Release(void)
 {
@@ -74,15 +74,15 @@ float Simplex::MyOctant::GetSize(void){return m_fSize;}
 vector3 Simplex::MyOctant::GetCenterGlobal(void){return m_v3Center;}
 vector3 Simplex::MyOctant::GetMaxGlobal(void){return m_v3Max;}
 vector3 Simplex::MyOctant::GetMinGlobal(void){return m_v3Min;}
-MyOctant* Simplex::MyOctant::GetParent(void){return m_pParent;}
-MyOctant* Simplex::MyOctant::GetChild(uint a_nChild) 
-{ 
-	if (a_nChild > 7) 
-	{
-		return nullptr;
-	}
-	return m_pChild[a_nChild];
-}
+//MyOctant* Simplex::MyOctant::GetParent(void){return m_pParent;}
+//MyOctant* Simplex::MyOctant::GetChild(uint a_nChild) 
+//{ 
+//	if (a_nChild > 7) 
+//	{
+//		return nullptr;
+//	}
+//	return m_pChild[a_nChild];
+//}
 
 
 //the big three
@@ -182,11 +182,11 @@ Simplex::MyOctant::MyOctant(MyOctant const& other)
 
 	m_pRoot , other.m_pRoot;
 	m_lChild, other.m_lChild;
-	m_pParent = other.m_pParent;
-	for (uint n = 0; n < 8; n++)
-	{
-		m_pChild[n] = other.m_pChild[n];
-	}
+	//m_pParent = other.m_pParent;
+	//for (uint n = 0; n < 8; n++)
+	//{
+	//	m_pChild[n] = other.m_pChild[n];
+	//}
 }
 MyOctant& Simplex::MyOctant::operator=(MyOctant const& other)
 {
@@ -208,22 +208,32 @@ Simplex::MyOctant::~MyOctant(void) {Release();}
 void Simplex::MyOctant::Display(uint a_nIndex, vector3 a_v3Color)
 {
 	//check if the id is the same as the index
-	if (m_uID == a_nIndex)
-	{
-		//display the wire cube
-		matrix4 m4Matrix = glm::translate(IDENTITY_M4, m_v3Center) * glm::scale(vector3(m_fSize));
-		m_pMeshMngr->AddWireCubeToRenderList(m4Matrix , a_v3Color, RENDER_WIRE);
-
-		//return
-		return;
-	}
+	//if (m_uID == a_nIndex)
+	//{
+	//	//display the wire cube
+	//	matrix4 m4Matrix = glm::translate(IDENTITY_M4, m_v3Center) * glm::scale(vector3(m_fSize));
+	//	m_pMeshMngr->AddWireCubeToRenderList(m4Matrix , a_v3Color, RENDER_WIRE);
+	//
+	//	//return
+	//	return;
+	//}
 
 	//if not, loop through and call for each child
-	for (uint i = 0; i < m_uChildren; i++) 
+	//for (uint i = 0; i < m_uChildren; i++) 
+	//{
+	//	m_pChild[i]->Display(a_nIndex);
+	//}
+	float l_fSize = m_fSize / 8;
+	float l_fHalfSize = l_fSize / 2;
+	for (int i = 0; i < m_GridList.size(); i++) 
 	{
-		m_pChild[i]->Display(a_nIndex);
+		for (int j = 0; j < m_GridList[i].size(); j++) 
+		{
+			vector3 l_v3Center(l_fHalfSize * i, 0, l_fHalfSize * j);
+			matrix4 m4Matrix = glm::translate(IDENTITY_M4, l_v3Center) * glm::scale(vector3(m_fSize / 8));
+			m_pMeshMngr->AddWireCubeToRenderList(m4Matrix, a_v3Color, RENDER_WIRE);
+		}
 	}
-	
 
 }
 void Simplex::MyOctant::Display(vector3 a_v3Color)
@@ -231,10 +241,10 @@ void Simplex::MyOctant::Display(vector3 a_v3Color)
 	
 
 	//loop through and call for each child
-	for (uint i = 0; i < m_uChildren; i++) 
-	{
-		m_pChild[i]->Display(a_v3Color);
-	}
+	//for (uint i = 0; i < m_uChildren; i++) 
+	//{
+	//	m_pChild[i]->Display(a_v3Color);
+	//}
 	
 	//display the wire cube
 	//m_pMeshMngr->AddWireCubeToRenderList(glm::translate(IDENTITY_M4, m_v3Center) * glm::scale(vector3(m_fSize)), 
@@ -263,80 +273,107 @@ void Simplex::MyOctant::DisplaysLeafs(vector3 a_v3Color)
 void Simplex::MyOctant::ClearEntityList(void)
 {
 	//go through and clear the list
-	for (uint i = 0; i < m_uChildren; i++) 
-	{
-		m_pChild[i]->ClearEntityList();
-	}
+	//for (uint i = 0; i < m_uChildren; i++) 
+	//{
+	//	m_pChild[i]->ClearEntityList();
+	//}
 	m_EntitiyList.clear();
 }
 
 void Simplex::MyOctant::Subdivide(void)
 {
-	//if you are at the max level, do not subdivide
-	if (m_uLevel >= m_uMaxLevel) 
-	{
-		return;
-	}
+	////if you are at the max level, do not subdivide
+	//if (m_uLevel >= m_uMaxLevel) 
+	//{
+	//	return;
+	//}
+	//
+	////if you have already subdivided, do not subdivide 
+	//if (m_uChildren != 0) 
+	//{
+	//	return;
+	//}
+	//
+	////make it not a leaf
+	//m_uChildren = 8;
+	//
+	////go through and set all the new octants 
+	//float l_fSize = m_fSize / 4.0f;
+	//float fSizeDouble = l_fSize * 2.0f;
+	//vector3 v3Center;
+	//
+	////MyOctant 0 
+	//v3Center = m_v3Center;
+	//v3Center.x -= l_fSize;
+	//v3Center.y -= l_fSize;
+	//v3Center.z -= l_fSize;
+	//m_pChild[0] = new MyOctant(v3Center, fSizeDouble);
+	//
+	////MyOctant 1
+	//v3Center.x += fSizeDouble;
+	//m_pChild[1] = new MyOctant(v3Center, fSizeDouble);
+	//
+	////MyOctant 2
+	//v3Center.z += fSizeDouble;
+	//m_pChild[2] = new MyOctant(v3Center, fSizeDouble);
+	//
+	////MyOctant 3
+	//v3Center.x -= fSizeDouble;
+	//m_pChild[3] = new MyOctant(v3Center, fSizeDouble);
+	//
+	////MyOctant 4
+	//v3Center.y += fSizeDouble;
+	//m_pChild[4] = new MyOctant(v3Center, fSizeDouble);
+	//
+	////MyOctant 5
+	//v3Center.z -= fSizeDouble;
+	//m_pChild[5] = new MyOctant(v3Center, fSizeDouble);
+	//
+	////MyOctant 6
+	//v3Center.x += fSizeDouble;
+	//m_pChild[6] = new MyOctant(v3Center, fSizeDouble);
+	//
+	////MyOctant 7
+	//v3Center.z += fSizeDouble;
+	//m_pChild[7] = new MyOctant(v3Center, fSizeDouble);
+	//
+	////loop through the list of children
+	//for (uint i = 0; i < m_uChildren; i++) 
+	//{
+	//	m_pChild[i]->m_pRoot = m_pRoot;
+	//	m_pChild[i]->m_pParent = this;
+	//	m_pChild[i]->m_uLevel = m_uLevel + 1;
+	//	if (m_pChild[i]->ContainsMoreThan(m_uIdealEntityCount)) 
+	//	{
+	//		m_pChild[i]->Subdivide();
+	//	}
+	//}
 
-	//if you have already subdivided, do not subdivide 
-	if (m_uChildren != 0) 
-	{
-		return;
-	}
+	//subdivide all at once (no recursion)
 
-	//make it not a leaf
-	m_uChildren = 8;
-
-	//go through and set all the new octants 
-	float l_fSize = m_fSize / 4.0f;
+	//check width/length of each grid space
+	float l_fSize = m_fSize / 8.0f;
 	float fSizeDouble = l_fSize * 2.0f;
-	vector3 v3Center;
+	vector3 v3Center(l_fSize/2, 0, l_fSize/2);
 
-	//MyOctant 0 
-	v3Center = m_v3Center;
-	v3Center.x -= l_fSize;
-	v3Center.y -= l_fSize;
-	v3Center.z -= l_fSize;
-	m_pChild[0] = new MyOctant(v3Center, fSizeDouble);
-
-	//MyOctant 1
-	v3Center.x += fSizeDouble;
-	m_pChild[1] = new MyOctant(v3Center, fSizeDouble);
-
-	//MyOctant 2
-	v3Center.z += fSizeDouble;
-	m_pChild[2] = new MyOctant(v3Center, fSizeDouble);
-
-	//MyOctant 3
-	v3Center.x -= fSizeDouble;
-	m_pChild[3] = new MyOctant(v3Center, fSizeDouble);
-
-	//MyOctant 4
-	v3Center.y += fSizeDouble;
-	m_pChild[4] = new MyOctant(v3Center, fSizeDouble);
-
-	//MyOctant 5
-	v3Center.z -= fSizeDouble;
-	m_pChild[5] = new MyOctant(v3Center, fSizeDouble);
-
-	//MyOctant 6
-	v3Center.x += fSizeDouble;
-	m_pChild[6] = new MyOctant(v3Center, fSizeDouble);
-
-	//MyOctant 7
-	v3Center.z += fSizeDouble;
-	m_pChild[7] = new MyOctant(v3Center, fSizeDouble);
-
-	//loop through the list of children
-	for (uint i = 0; i < m_uChildren; i++) 
+	for (int i = 0; i < 8; i++) 
 	{
-		m_pChild[i]->m_pRoot = m_pRoot;
-		m_pChild[i]->m_pParent = this;
-		m_pChild[i]->m_uLevel = m_uLevel + 1;
-		if (m_pChild[i]->ContainsMoreThan(m_uIdealEntityCount)) 
+		std::vector<MyOctant> OctantVector;
+		
+		for (int j = 0; j < 8; j++) 
 		{
-			m_pChild[i]->Subdivide();
+			//create a square at [i,j]
+			MyOctant temp(v3Center, l_fSize);
+			OctantVector.push_back(temp);
+			
+			//OctantVector[i]
+			
+				v3Center.z += l_fSize;
 		}
+
+		m_GridList.push_back(OctantVector);
+		v3Center.x += l_fSize;
+		v3Center.z = l_fSize / 2;
 	}
 }
 
@@ -427,9 +464,9 @@ void Simplex::MyOctant::KillBranches(void)
 	//recursion
 	for (uint nIndex = 0; nIndex < m_uChildren; nIndex++) 
 	{
-		m_pChild[nIndex]->KillBranches();
-		delete m_pChild[nIndex];
-		m_pChild[nIndex] = nullptr;
+		//m_pChild[nIndex]->KillBranches();
+		//delete m_pChild[nIndex];
+		//m_pChild[nIndex] = nullptr;
 	}
 	m_uChildren = 0;
 }
@@ -454,10 +491,7 @@ void Simplex::MyOctant::ConstructTree(uint a_nMaxLevel)
 	m_lChild.clear();
 
 	//if the base tree
-	if (ContainsMoreThan(m_uIdealEntityCount)) 
-	{
-		Subdivide();
-	}
+	Subdivide();
 
 	//add MyOctant ID to entities 
 	AssignIDtoEntity();
@@ -471,7 +505,7 @@ void Simplex::MyOctant::AssignIDtoEntity(void)
 	//go until you hit a list 
 	for (uint nChild = 0; nChild < m_uChildren; nChild++) 
 	{
-		m_pChild[nChild]->AssignIDtoEntity();
+		//m_pChild[nChild]->AssignIDtoEntity();
 	}
 	if (m_uChildren == 0)  // if this is a leaf 
 	{
@@ -490,7 +524,7 @@ void Simplex::MyOctant::AssignIDtoEntity(void)
 void MyOctant::UpdateEntityIDs() {
 
 	for (uint nChild = 0; nChild < m_uChildren; nChild++)
-		m_pChild[nChild]->UpdateEntityIDs();
+		//m_pChild[nChild]->UpdateEntityIDs();
 
 	//pretty sure this is what is making it lag, will fix later
 	entityArray = m_pEntityMngr->GetEntities();
@@ -553,7 +587,7 @@ void Simplex::MyOctant::ConstructList(void)
 {
 	for (uint nChild = 0; nChild < m_uChildren; nChild++) 
 	{
-		m_pChild[nChild]->ConstructList();
+		//m_pChild[nChild]->ConstructList();
 	}
 	if (m_EntitiyList.size() > 0) 
 	{
