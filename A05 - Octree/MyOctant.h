@@ -41,7 +41,7 @@ namespace Simplex
 		MyOctant* m_pRoot = nullptr; // Root MyOctant
 		std::vector<MyOctant*> m_lChild; // list of nodes that contain objects (this will be applied to the root only)
 
-		std::vector<std::vector<MyOctant>> m_GridList;
+		
 
 		MyEntity** entityArray;
 

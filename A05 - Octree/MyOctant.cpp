@@ -146,6 +146,9 @@ Simplex::MyOctant::MyOctant(uint a_nMaxLevel, uint a_nIdealEntityCount)
 	//construct tree
 	ConstructTree(m_uMaxLevel);
 
+	//subdivide 
+	Subdivide();
+
 	entityArray = m_pEntityMngr->GetEntities();
 }
 Simplex::MyOctant::MyOctant(vector3 a_v3Center, float a_fSize)
@@ -285,17 +288,17 @@ void Simplex::MyOctant::ClearEntityList(void)
 void Simplex::MyOctant::Subdivide(void)
 {
 	////if you are at the max level, do not subdivide
-	if (m_uLevel >= m_uMaxLevel) 
-	{
-		return;
-	}
-	
-	//if you have already subdivided, do not subdivide 
-	if (m_uChildren != 0) 
-	{
-		return;
-	}
-	
+	//if (m_uLevel >= m_uMaxLevel) 
+	//{
+	//	return;
+	//}
+	//
+	////if you have already subdivided, do not subdivide 
+	//if (m_uChildren != 0) 
+	//{
+	//	return;
+	//}
+	//
 	//make it not a leaf
 	m_uChildren = 16;
 	
@@ -323,7 +326,7 @@ void Simplex::MyOctant::Subdivide(void)
 		{
 			//create a square at [i,j]
 			//add the octant to the child list 
-			m_lChild[count] = new MyOctant(v3Center, l_fSize);
+			m_pChild[count] = new MyOctant(v3Center, l_fSize);
 
 			//iterate
 			count++;
@@ -474,9 +477,9 @@ void Simplex::MyOctant::KillBranches(void)
 	//recursion
 	for (uint nIndex = 0; nIndex < m_uChildren; nIndex++) 
 	{
-		//m_pChild[nIndex]->KillBranches();
-		//delete m_pChild[nIndex];
-		//m_pChild[nIndex] = nullptr;
+		m_pChild[nIndex]->KillBranches();
+		delete m_pChild[nIndex];
+		m_pChild[nIndex] = nullptr;
 	}
 	m_uChildren = 0;
 }
@@ -534,7 +537,9 @@ void Simplex::MyOctant::AssignIDtoEntity(void)
 void MyOctant::UpdateEntityIDs() {
 
 	for (uint nChild = 0; nChild < m_uChildren; nChild++)
-		//m_pChild[nChild]->UpdateEntityIDs();
+		m_pChild[nChild]->UpdateEntityIDs();
+
+	
 
 	//pretty sure this is what is making it lag, will fix later
 	entityArray = m_pEntityMngr->GetEntities();
@@ -597,7 +602,7 @@ void Simplex::MyOctant::ConstructList(void)
 {
 	for (uint nChild = 0; nChild < m_uChildren; nChild++) 
 	{
-		//m_pChild[nChild]->ConstructList();
+		m_pChild[nChild]->ConstructList();
 	}
 	if (m_EntitiyList.size() > 0) 
 	{
