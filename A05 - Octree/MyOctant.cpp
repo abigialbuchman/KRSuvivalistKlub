@@ -287,18 +287,18 @@ void Simplex::MyOctant::ClearEntityList(void)
 
 void Simplex::MyOctant::Subdivide(void)
 {
-	////if you are at the max level, do not subdivide
-	//if (m_uLevel >= m_uMaxLevel) 
-	//{
-	//	return;
-	//}
-	//
-	////if you have already subdivided, do not subdivide 
-	//if (m_uChildren != 0) 
-	//{
-	//	return;
-	//}
-	//
+	//if you are at the max level, do not subdivide
+	if (m_uLevel >= m_uMaxLevel) 
+	{
+		return;
+	}
+	
+	//if you have already subdivided, do not subdivide 
+	if (m_uChildren != 0) 
+	{
+		return;
+	}
+	
 	//make it not a leaf
 	m_uChildren = 16;
 	
@@ -346,6 +346,7 @@ void Simplex::MyOctant::Subdivide(void)
 			m_pChild[i]->Subdivide();
 		}
 	}
+
 	////MyOctant 0 
 	//v3Center = m_v3Center;
 	//v3Center.x -= l_fSize;
