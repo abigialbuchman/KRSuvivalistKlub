@@ -331,7 +331,18 @@ void Simplex::MyOctant::Subdivide(void)
 		}
 		v3Center.x += width;
 	}
-	
+
+	//loop through the list of children
+	for (uint i = 0; i < m_uChildren; i++)
+	{
+		m_pChild[i]->m_pRoot = m_pRoot;
+		m_pChild[i]->m_pParent = this;
+		m_pChild[i]->m_uLevel = m_uLevel + 1;
+		if (m_pChild[i]->ContainsMoreThan(m_uIdealEntityCount))
+		{
+			m_pChild[i]->Subdivide();
+		}
+	}
 	////MyOctant 0 
 	//v3Center = m_v3Center;
 	//v3Center.x -= l_fSize;
@@ -367,16 +378,7 @@ void Simplex::MyOctant::Subdivide(void)
 	//v3Center.z += fSizeDouble;
 	//m_pChild[7] = new MyOctant(v3Center, fSizeDouble);
 	//
-	////loop through the list of children
-	//for (uint i = 0; i < m_uChildren; i++) 
-	//{
-	//	m_pChild[i]->m_pRoot = m_pRoot;
-	//	m_pChild[i]->m_pParent = this;
-	//	m_pChild[i]->m_uLevel = m_uLevel + 1;
-	//	if (m_pChild[i]->ContainsMoreThan(m_uIdealEntityCount)) 
-	//	{
-	//		m_pChild[i]->Subdivide();
-	//	}
+	
 	//}
 
 	//subdivide all at once (no recursion)
