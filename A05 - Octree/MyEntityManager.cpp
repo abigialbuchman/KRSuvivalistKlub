@@ -188,8 +188,8 @@ void Simplex::MyEntityManager::Update(void)
 					}
 					else {
 						vector3 v = m_mEntityArray[i]->GetVelocity();
-						v.x *= -0.5f;
-						v.z *= -0.5f;
+						v.x *= -1.0f;
+						//v.z *= -0.5f;
 						m_mEntityArray[i]->SetVelocity(v);
 					}
 				}
@@ -205,8 +205,9 @@ void Simplex::MyEntityManager::Update(void)
 							m_mEntityArray[i]->SetVelocity(v2);
 						}
 						vector3 v = m_mEntityArray[j]->GetVelocity();
-						v.x *= -0.5f;
-						v.z *= -0.5f;
+						v.x *= -0.25f;
+						//v.z *= -0.5f;
+						
 						m_mEntityArray[j]->SetVelocity(v);
 						
 					}
