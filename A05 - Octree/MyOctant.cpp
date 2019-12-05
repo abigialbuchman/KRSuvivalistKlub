@@ -23,12 +23,14 @@ void MyOctant::Init(void)
 	m_pMeshMngr = MeshManager::GetInstance();
 	m_pEntityMngr = MyEntityManager::GetInstance();
 
-	//m_pRoot = nullptr;
-	//m_pParent = nullptr;
-	//for (uint n = 0; n < 8; n++)
-	//{
-	//	m_pChild[n] = nullptr;
-	//}
+	m_pRoot = nullptr;
+	m_pParent = nullptr;
+	for (uint n = 0; n < 16; n++)
+	{
+		m_pChild[n] = nullptr;
+	}
+	m_uSubdivisions = 4;
+
 }
 void MyOctant::Swap(MyOctant& other)
 {
@@ -48,11 +50,11 @@ void MyOctant::Swap(MyOctant& other)
 	std::swap(m_pEntityMngr, other.m_pEntityMngr);
 
 	std::swap(m_pRoot, other.m_pRoot);
-	//std::swap(m_pParent, other.m_pParent);
-	//for (uint n = 0; n < 8; n++)
-	//{
-	//	std::swap(m_pChild[n], other.m_pChild[n]);
-	//}
+	std::swap(m_pParent, other.m_pParent);
+	for (uint n = 0; n < 4; n++)
+	{
+		std::swap(m_pChild[n], other.m_pChild[n]);
+	}
 }
 void Simplex::MyOctant::Release(void)
 {
@@ -74,15 +76,15 @@ float Simplex::MyOctant::GetSize(void){return m_fSize;}
 vector3 Simplex::MyOctant::GetCenterGlobal(void){return m_v3Center;}
 vector3 Simplex::MyOctant::GetMaxGlobal(void){return m_v3Max;}
 vector3 Simplex::MyOctant::GetMinGlobal(void){return m_v3Min;}
-//MyOctant* Simplex::MyOctant::GetParent(void){return m_pParent;}
-//MyOctant* Simplex::MyOctant::GetChild(uint a_nChild) 
-//{ 
-//	if (a_nChild > 7) 
-//	{
-//		return nullptr;
-//	}
-//	return m_pChild[a_nChild];
-//}
+MyOctant* Simplex::MyOctant::GetParent(void){return m_pParent;}
+MyOctant* Simplex::MyOctant::GetChild(uint a_nChild) 
+{ 
+	if (a_nChild > 16) 
+	{
+		return nullptr;
+	}
+	return m_pChild[a_nChild];
+}
 
 
 //the big three
@@ -182,11 +184,11 @@ Simplex::MyOctant::MyOctant(MyOctant const& other)
 
 	m_pRoot , other.m_pRoot;
 	m_lChild, other.m_lChild;
-	//m_pParent = other.m_pParent;
-	//for (uint n = 0; n < 8; n++)
-	//{
-	//	m_pChild[n] = other.m_pChild[n];
-	//}
+	m_pParent = other.m_pParent;
+	for (uint n = 0; n < 16; n++)
+	{
+		m_pChild[n] = other.m_pChild[n];
+	}
 }
 MyOctant& Simplex::MyOctant::operator=(MyOctant const& other)
 {
@@ -208,32 +210,32 @@ Simplex::MyOctant::~MyOctant(void) {Release();}
 void Simplex::MyOctant::Display(uint a_nIndex, vector3 a_v3Color)
 {
 	//check if the id is the same as the index
-	//if (m_uID == a_nIndex)
-	//{
-	//	//display the wire cube
-	//	matrix4 m4Matrix = glm::translate(IDENTITY_M4, m_v3Center) * glm::scale(vector3(m_fSize));
-	//	m_pMeshMngr->AddWireCubeToRenderList(m4Matrix , a_v3Color, RENDER_WIRE);
-	//
-	//	//return
-	//	return;
-	//}
+	if (m_uID == a_nIndex)
+	{
+		//display the wire cube
+		matrix4 m4Matrix = glm::translate(IDENTITY_M4, m_v3Center) * glm::scale(vector3(m_fSize));
+		m_pMeshMngr->AddWireCubeToRenderList(m4Matrix , a_v3Color, RENDER_WIRE);
+	
+		//return
+		return;
+	}
 
 	//if not, loop through and call for each child
-	//for (uint i = 0; i < m_uChildren; i++) 
-	//{
-	//	m_pChild[i]->Display(a_nIndex);
-	//}
-	float l_fSize = m_fSize / 8;
-	float l_fHalfSize = l_fSize / 2;
-	for (int i = 0; i < m_GridList.size(); i++) 
+	for (uint i = 0; i < m_uChildren; i++) 
 	{
-		for (int j = 0; j < m_GridList[i].size(); j++) 
-		{
-			vector3 l_v3Center(l_fHalfSize * i, 0, l_fHalfSize * j);
-			matrix4 m4Matrix = glm::translate(IDENTITY_M4, l_v3Center) * glm::scale(vector3(m_fSize / 8));
-			m_pMeshMngr->AddWireCubeToRenderList(m4Matrix, a_v3Color, RENDER_WIRE);
-		}
+		m_pChild[i]->Display(a_nIndex);
 	}
+	//float l_fSize = m_fSize / 8;
+	//float l_fHalfSize = l_fSize / 2;
+	//for (int i = 0; i < m_GridList.size(); i++) 
+	//{
+	//	for (int j = 0; j < m_GridList[i].size(); j++) 
+	//	{
+	//		vector3 l_v3Center(l_fHalfSize * i, 0, l_fHalfSize * j);
+	//		matrix4 m4Matrix = glm::translate(IDENTITY_M4, l_v3Center) * glm::scale(vector3(m_fSize / 8));
+	//		m_pMeshMngr->AddWireCubeToRenderList(m4Matrix, a_v3Color, RENDER_WIRE);
+	//	}
+	//}
 
 }
 void Simplex::MyOctant::Display(vector3 a_v3Color)
@@ -241,14 +243,14 @@ void Simplex::MyOctant::Display(vector3 a_v3Color)
 	
 
 	//loop through and call for each child
-	//for (uint i = 0; i < m_uChildren; i++) 
-	//{
-	//	m_pChild[i]->Display(a_v3Color);
-	//}
+	for (uint i = 0; i < m_uChildren; i++) 
+	{
+		m_pChild[i]->Display(a_v3Color);
+	}
 	
 	//display the wire cube
-	//m_pMeshMngr->AddWireCubeToRenderList(glm::translate(IDENTITY_M4, m_v3Center) * glm::scale(vector3(m_fSize)), 
-		//a_v3Color, RENDER_WIRE);
+	m_pMeshMngr->AddWireCubeToRenderList(glm::translate(IDENTITY_M4, m_v3Center) * glm::scale(vector3(m_fSize)), 
+	a_v3Color, RENDER_WIRE);
 	matrix4 m4Matrix = glm::translate(IDENTITY_M4, m_v3Center) * glm::scale(vector3(m_fSize));
 	m_pMeshMngr->AddWireCubeToRenderList(m4Matrix, a_v3Color, RENDER_WIRE);
 
@@ -273,35 +275,63 @@ void Simplex::MyOctant::DisplaysLeafs(vector3 a_v3Color)
 void Simplex::MyOctant::ClearEntityList(void)
 {
 	//go through and clear the list
-	//for (uint i = 0; i < m_uChildren; i++) 
-	//{
-	//	m_pChild[i]->ClearEntityList();
-	//}
+	for (uint i = 0; i < m_uChildren; i++) 
+	{
+		m_pChild[i]->ClearEntityList();
+	}
 	m_EntitiyList.clear();
 }
 
 void Simplex::MyOctant::Subdivide(void)
 {
 	////if you are at the max level, do not subdivide
-	//if (m_uLevel >= m_uMaxLevel) 
-	//{
-	//	return;
-	//}
-	//
-	////if you have already subdivided, do not subdivide 
-	//if (m_uChildren != 0) 
-	//{
-	//	return;
-	//}
-	//
-	////make it not a leaf
-	//m_uChildren = 8;
-	//
-	////go through and set all the new octants 
-	//float l_fSize = m_fSize / 4.0f;
+	if (m_uLevel >= m_uMaxLevel) 
+	{
+		return;
+	}
+	
+	//if you have already subdivided, do not subdivide 
+	if (m_uChildren != 0) 
+	{
+		return;
+	}
+	
+	//make it not a leaf
+	m_uChildren = 16;
+	
+	int count = 0;
+
+	//go through and set all the new octants 
+	float l_fSize = m_fSize / m_uSubdivisions;
+	float fSizeHalf = l_fSize / 2;
+
+	//find the width and height 
+	float width = (m_v3Max.x - m_v3Min.x) / m_uSubdivisions;
+	float widthHalf = width / 2;
+	float height = (m_v3Max.z - m_v3Min.z) / m_uSubdivisions;
+	float heightHalf = height / 2;
+
+	vector3 v3Center(widthHalf, 0, heightHalf);
+
+	//float l_fSize = m_fSize / 8.0f;
 	//float fSizeDouble = l_fSize * 2.0f;
-	//vector3 v3Center;
-	//
+	//vector3 v3Center(l_fSize / 2, 0, l_fSize / 2);
+
+	for (int i = 0; i < m_uSubdivisions; i++)
+	{
+		for (int j = 0; j < m_uSubdivisions; j++)
+		{
+			//create a square at [i,j]
+			//add the octant to the child list 
+			m_lChild[count] = new MyOctant(v3Center, l_fSize);
+
+			//iterate
+			count++;
+			v3Center.z += height;
+		}
+		v3Center.x += width;
+	}
+	
 	////MyOctant 0 
 	//v3Center = m_v3Center;
 	//v3Center.x -= l_fSize;
@@ -352,29 +382,7 @@ void Simplex::MyOctant::Subdivide(void)
 	//subdivide all at once (no recursion)
 
 	//check width/length of each grid space
-	float l_fSize = m_fSize / 8.0f;
-	float fSizeDouble = l_fSize * 2.0f;
-	vector3 v3Center(l_fSize/2, 0, l_fSize/2);
-
-	for (int i = 0; i < 8; i++) 
-	{
-		std::vector<MyOctant> OctantVector;
-		
-		for (int j = 0; j < 8; j++) 
-		{
-			//create a square at [i,j]
-			MyOctant temp(v3Center, l_fSize);
-			OctantVector.push_back(temp);
-			
-			//OctantVector[i]
-			
-				v3Center.z += l_fSize;
-		}
-
-		m_GridList.push_back(OctantVector);
-		v3Center.x += l_fSize;
-		v3Center.z = l_fSize / 2;
-	}
+	
 }
 
 bool Simplex::MyOctant::IsColliding(uint a_uRBIndex)

@@ -18,10 +18,12 @@ namespace Simplex
 		static uint m_uMyOctantCount; // this will store the number of MyOctants instantiated
 		static uint m_uMaxLevel; //will store the maxmium level an MyOctant can go
 		static uint m_uIdealEntityCount; //will tell how many ideal Entities this object will contain
+		
 
 		uint m_uID = 0; //will store the current ID for this MyOctant
 		uint m_uLevel = 0; // store the current level of the MyOctant 
 		uint m_uChildren = 0; //Number of children on the MyOctant (either zero or eight)
+		uint m_uSubdivisions = 0;
 
 		float m_fSize = 0.0f; //size of the MyOctant 
 
@@ -32,8 +34,8 @@ namespace Simplex
 		vector3 m_v3Min = vector3(0.0f); //will store the minimum vector of the MyOctant
 		vector3 m_v3Max = vector3(0.0f); // Will store the maximum vector of the MyOctant 
 
-		//MyOctant* m_pParent = nullptr; //Will store the parent of the current MyOctant
-		//MyOctant* m_pChild[8]; //will store the childre of the current MyOctant 
+		MyOctant* m_pParent = nullptr; //Will store the parent of the current MyOctant
+		MyOctant* m_pChild[16]; //will store the childre of the current MyOctant 
 
 		std::vector<uint> m_EntitiyList = std::vector<uint>(); // list of all entities under this MyOctant
 		MyOctant* m_pRoot = nullptr; // Root MyOctant
