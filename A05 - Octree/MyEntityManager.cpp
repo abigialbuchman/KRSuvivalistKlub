@@ -182,34 +182,75 @@ void Simplex::MyEntityManager::Update(void)
 			if (m_mEntityArray[i]->IsColliding(m_mEntityArray[j])) {
 				//collision resolution goes here
 				//good god do we need to rethink how collision resolution works for the final deliverable
-				if (m_mEntityArray[i]->tag == "rock") {
-					if (m_mEntityArray[j]->tag == "ground") {
-						m_mEntityArray[i]->SetGrounded(true);
-					}
-					else {
-						vector3 v = m_mEntityArray[i]->GetVelocity();
-						v.x *= -1.0f;
-						//v.z *= -0.5f;
-						m_mEntityArray[i]->SetVelocity(v);
-					}
+				
+
+				
+
+				//if (m_mEntityArray[i]->tag == "rock") {
+				//	if (m_mEntityArray[j]->tag == "ground") {
+				//		m_mEntityArray[i]->SetGrounded(true);
+				//	}
+				//	else {
+				//		vector3 v = m_mEntityArray[i]->GetVelocity();
+				//		v.x *= -1.0f;
+				//		//v.z *= -0.5f;
+				//		m_mEntityArray[i]->SetVelocity(v);
+				//	}
+				//}
+
+				bool left = false;
+				bool right = false;
+				bool front = false;
+
+				vector3 forward = vector3(0.0f, 0.0f, 1.0f);
+				vector3 treeToRock = m_mEntityArray[j]->GetRigidBody()->GetCenterGlobal() - m_mEntityArray[i]->GetRigidBody()->GetCenterGlobal();
+				treeToRock.y = 0.0f;
+
+				vector3 cross = glm::cross(forward, treeToRock);
+				
+				if (cross.y > .5f) {
+					left = true;
+					/*vector3 newPos = m_mEntityArray[j]->GetRigidBody()->GetCenterGlobal();
+					newPos.x = m_mEntityArray[i]->GetRigidBody()->GetCenterGlobal().x +
+						m_mEntityArray[i]->GetRigidBody()->GetHalfWidth().x +
+						newPos.x + m_mEntityArray[j]->GetRigidBody()->GetHalfWidth().x;
+					m_mEntityArray[j]->SetPosition(newPos);*/
 				}
+				else if (cross.y < -.5f) {
+					right = true;
+				}
+				else {
+					front = true;
+				}
+
 				if (m_mEntityArray[j]->tag == "rock") {
 					if (m_mEntityArray[i]->tag == "ground") {
 						m_mEntityArray[j]->SetGrounded(true);
 					}
 					else {
+						std::cout << cross.y << std::endl;
 						if (m_mEntityArray[i]->tag == "rock") {
 							vector3 v2 = m_mEntityArray[j]->GetVelocity();
 							v2.x *= 0.5f;
 							v2.z *= 0.5f;
 							m_mEntityArray[i]->SetVelocity(v2);
+
+							vector3 v = m_mEntityArray[j]->GetVelocity();
+							v.x *= -0.5f;
+							v.z *= -0.5f;
+							m_mEntityArray[j]->SetVelocity(v);
 						}
-						vector3 v = m_mEntityArray[j]->GetVelocity();
-						v.x *= -0.25f;
-						//v.z *= -0.5f;
-						
-						m_mEntityArray[j]->SetVelocity(v);
-						
+						else {
+							vector3 v = m_mEntityArray[j]->GetVelocity();
+							if (left || right) {
+								v.x *= -0.75f;
+							}
+							else {
+								v.z *= -0.75f;
+							}
+							m_mEntityArray[j]->SetVelocity(v);
+							std::cout << std::endl;
+						}
 					}
 				}
 			}

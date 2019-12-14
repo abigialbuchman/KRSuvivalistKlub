@@ -318,3 +318,9 @@ void MyEntity::AddForce(vector3 a_force) {
 	velocity += a_force;
 }
 void MyEntity::SetGrounded(bool g) { grounded = g; }
+void MyEntity::SetPosition(vector3 position) {
+	matrix4 pos = IDENTITY_M4;
+	pos *= glm::translate(pos, position);
+	if (tag == "rock") pos *= glm::scale(vector3(0.25f));
+	SetModelMatrix(pos);
+}

@@ -41,6 +41,7 @@ public:
 	void SetVelocity(vector3 a_velocity);
 	void AddForce(vector3 a_force);
 	void SetGrounded(bool g);
+	void SetPosition(vector3 position);
 	void Update();
 
 	/*
