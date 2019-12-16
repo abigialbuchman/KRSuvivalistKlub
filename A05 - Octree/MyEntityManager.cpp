@@ -213,14 +213,16 @@ void Simplex::MyEntityManager::Update(void)
 					/*vector3 newPos = m_mEntityArray[j]->GetRigidBody()->GetCenterGlobal();
 					newPos.x = m_mEntityArray[i]->GetRigidBody()->GetCenterGlobal().x +
 						m_mEntityArray[i]->GetRigidBody()->GetHalfWidth().x +
-						newPos.x + m_mEntityArray[j]->GetRigidBody()->GetHalfWidth().x;
-					m_mEntityArray[j]->SetPosition(newPos);*/
+						newPos.x + m_mEntityArray[j]->GetRigidBody()->GetHalfWidth().x;*/
+					//m_mEntityArray[j]->SetPosition(vector3(m_mEntityArray[i]->GetRigidBody()->GetCenterGlobal().x + .5, m_mEntityArray[i]->GetRigidBody()->GetCenterGlobal().y, m_mEntityArray[i]->GetRigidBody()->GetCenterGlobal().z));
 				}
 				else if (cross.y < -.5f) {
 					right = true;
+					//m_mEntityArray[j]->SetPosition(vector3(m_mEntityArray[i]->GetRigidBody()->GetCenterGlobal().x + .5, m_mEntityArray[i]->GetRigidBody()->GetCenterGlobal().y, m_mEntityArray[i]->GetRigidBody()->GetCenterGlobal().z));
 				}
 				else {
 					front = true;
+					//m_mEntityArray[j]->SetPosition(vector3(m_mEntityArray[j]->GetRigidBody()->GetCenterGlobal().x + .5, m_mEntityArray[j]->GetRigidBody()->GetCenterGlobal().y, m_mEntityArray[j]->GetRigidBody()->GetCenterGlobal().z));
 				}
 
 				if (m_mEntityArray[j]->tag == "rock") {
@@ -241,15 +243,27 @@ void Simplex::MyEntityManager::Update(void)
 							m_mEntityArray[j]->SetVelocity(v);
 						}
 						else {
-							vector3 v = m_mEntityArray[j]->GetVelocity();
-							if (left || right) {
-								v.x *= -0.75f;
+							if (m_mEntityArray[j]->GetLastCollidable() != m_mEntityArray[i])
+							{
+								m_mEntityArray[i]->SetLastCollidable(m_mEntityArray[i]);
+								if (left)
+									std::cout << "left" << std::endl;
+								else if (right)
+									std::cout << "right" << std::endl;
+								else
+									std::cout << "front/back" << std::endl;
+
+								vector3 v = m_mEntityArray[j]->GetVelocity();
+								if (left || right) {
+									v.x *= -1.1f;
+								}
+								else {
+									v.z *= -1.1f;
+								}
+								m_mEntityArray[j]->SetVelocity(v);
+								std::cout << std::endl;
 							}
-							else {
-								v.z *= -0.75f;
-							}
-							m_mEntityArray[j]->SetVelocity(v);
-							std::cout << std::endl;
+							
 						}
 					}
 				}

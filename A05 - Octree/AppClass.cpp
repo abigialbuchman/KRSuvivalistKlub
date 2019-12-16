@@ -24,7 +24,7 @@ void Application::InitVariables(void)
 	//make the trees
 	for (int i = 0; i < numTrees; i++) {
 		//randomize tree type
-		int tree = rand() % 5 + 1;
+		int tree = rand() % 4 + 1;
 		//int tree = 1;
 		switch (tree)
 		{
@@ -38,9 +38,6 @@ void Application::InitVariables(void)
 			m_pEntityMngr->AddEntity("CustomModels\\tree3.obj", "tree" + i, "tree");
 			break;
 		case 4:
-			m_pEntityMngr->AddEntity("CustomModels\\tree4.obj", "tree" + i, "tree");
-			break;
-		case 5:
 			m_pEntityMngr->AddEntity("CustomModels\\tree5.obj", "tree" + i, "tree");
 			break;
 		default:
@@ -56,7 +53,7 @@ void Application::InitVariables(void)
 		m_pEntityMngr->SetModelMatrix(m4Position);
 	}
 
-	m_uOctantLevels = 0;
+	m_uOctantLevels = 1;
 	m_pEntityMngr->Update();
 	m_pRoot = new MyOctant(m_uOctantLevels, 5);
 }

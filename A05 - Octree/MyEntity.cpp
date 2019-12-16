@@ -294,6 +294,16 @@ void Simplex::MyEntity::SortDimensions(void)
 	std::sort(m_DimensionArray, m_DimensionArray + m_nDimensionCount);
 }
 
+MyEntity* Simplex::MyEntity::GetLastCollidable()
+{
+	return lastCollided;
+}
+
+void Simplex::MyEntity::SetLastCollidable(MyEntity* e)
+{
+	lastCollided = e;
+}
+
 
 void MyEntity::Update() {
 	// if not on ground

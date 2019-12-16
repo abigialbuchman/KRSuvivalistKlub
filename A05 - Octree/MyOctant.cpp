@@ -143,7 +143,7 @@ Simplex::MyOctant::MyOctant(uint a_nMaxLevel, uint a_nIdealEntityCount)
 
 	//construct tree
 	ConstructTree(m_uMaxLevel);
-
+	Subdivide();
 	entityArray = m_pEntityMngr->GetEntities();
 }
 Simplex::MyOctant::MyOctant(vector3 a_v3Center, float a_fSize)

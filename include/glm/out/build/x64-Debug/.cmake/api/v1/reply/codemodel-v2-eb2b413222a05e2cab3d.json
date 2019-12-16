@@ -34,7 +34,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "glm_dummy::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-glm_dummy-Debug-f5eb596068e1e5b3fc72.json",
+					"jsonFile" : "target-glm_dummy-Debug-c4a859e8085a3c9dfaab.json",
 					"name" : "glm_dummy",
 					"projectIndex" : 0
 				}
@@ -44,8 +44,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "D:/Profiles/amb5759/source/repos/ambIGME320/include/glm/out/build/x64-Debug",
-		"source" : "D:/Profiles/amb5759/source/repos/ambIGME320/include/glm"
+		"build" : "C:/Users/amb5759/source/repos/KRSuvivalistKlub2/include/glm/out/build/x64-Debug",
+		"source" : "C:/Users/amb5759/source/repos/KRSuvivalistKlub2/include/glm"
 	},
 	"version" : 
 	{

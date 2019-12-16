@@ -33,6 +33,8 @@ class MyEntity
 	const float gravity = 0.01f;
 	bool grounded = false;
 
+	MyEntity* lastCollided = nullptr;
+
 public:
 
 	String tag = "";
@@ -187,6 +189,10 @@ public:
 	OUTPUT: ---
 	*/
 	void SortDimensions(void);
+
+	MyEntity* GetLastCollidable();
+
+	void SetLastCollidable( MyEntity* e );
 
 private:
 	/*
